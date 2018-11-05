@@ -238,15 +238,16 @@ class UICircularProgressRingLayer: CAShapeLayer {
         guard innerRingWidth > 0 else { return }
 
         let center: CGPoint = CGPoint(x: bounds.midX, y: bounds.midY)
+		
+		let endInnerAngle = calculateInnerEndAngle()
 
-        let innerEndAngle = calculateInnerEndAngle()
         let radiusIn = calculateInnerRadius()
 
         // Start drawing
         let innerPath: UIBezierPath = UIBezierPath(arcCenter: center,
                                                    radius: radiusIn,
                                                    startAngle: startAngle.toRads,
-                                                   endAngle: innerEndAngle.toRads,
+                                                   endAngle: endInnerAngle.toRads,
                                                    clockwise: isClockwise)
 
         // Draw path
@@ -283,11 +284,22 @@ class UICircularProgressRingLayer: CAShapeLayer {
             ctx.restoreGState()
         }
 
-        if showsValueKnob && value > minValue {
-            let knobOffset = valueKnobSize / 2
-            drawValueKnob(in: ctx, origin: CGPoint(x: innerPath.currentPoint.x - knobOffset,
-                                                   y: innerPath.currentPoint.y - knobOffset))
-        }
+		if showsValueKnob && value > minValue {
+			let knobOffset = valueKnobSize / 2.0
+			let angleDiff: CGFloat = (startAngle > endAngle) ? (360.0 - startAngle + endAngle) : (endAngle - startAngle)
+			let realAngle = (value - minValue) / (maxValue - minValue) * angleDiff + startAngle
+			
+			let knobY: CGFloat = CGFloat(center.y + radiusIn * sin(realAngle.toRads)) - knobOffset
+			let knobX: CGFloat = CGFloat(center.x + radiusIn * cos(realAngle.toRads)) - knobOffset
+			
+			print("VALUE: \(value)")
+			print(knobOffset)
+			print(angleDiff)
+			print(realAngle)
+			print(knobX)
+			print(knobY)
+			drawValueKnob(in: ctx, origin: CGPoint(x: knobX, y: knobY))
+		}
     }
 
     /// Updates the outer ring path depending on the ring's style
@@ -341,7 +353,7 @@ class UICircularProgressRingLayer: CAShapeLayer {
             if !isClockwise {
                 innerEndAngle = startAngle - ((value - minValue) / (maxValue - minValue) * angleDiff)
             } else {
-                innerEndAngle = (value - minValue) / (maxValue - minValue) * angleDiff + startAngle
+                innerEndAngle = angleDiff + startAngle
             }
         }
 
@@ -357,15 +369,15 @@ class UICircularProgressRingLayer: CAShapeLayer {
 
         switch ringStyle {
         case .inside:
-            let difference = outerRingWidth * 2 + innerRingSpacing + (showsValueKnob ? valueKnobSize / 2 : 0)
-            let offSet = innerRingWidth / 2 + (showsValueKnob ? valueKnobSize / 2 : 0)
-            radiusIn = (min(bounds.width - difference, bounds.height - difference) / 2) - offSet
+            let difference = outerRingWidth * 2.0 + innerRingSpacing + (showsValueKnob ? valueKnobSize / 2.0 : 0.0)
+            let offSet = innerRingWidth / 2.0 + (showsValueKnob ? valueKnobSize / 2.0 : 0.0)
+            radiusIn = (min(bounds.width - difference, bounds.height - difference) / 2.0) - offSet
         case .bordered:
-            let offSet = (max(outerRingWidth, innerRingWidth) / 2) + (showsValueKnob ? valueKnobSize / 4 : 0) + (outerBorderWidth*2)
-            radiusIn = (min(bounds.width, bounds.height) / 2) - offSet
+            let offSet = (max(outerRingWidth, innerRingWidth) / 2.0) + (showsValueKnob ? valueKnobSize / 4.0 : 0.0) + (outerBorderWidth*2.0)
+            radiusIn = (min(bounds.width, bounds.height) / 2.0) - offSet
         default:
-            let offSet = (max(outerRingWidth, innerRingWidth) / 2) + (showsValueKnob ? valueKnobSize / 4 : 0)
-            radiusIn = (min(bounds.width, bounds.height) / 2) - offSet
+            let offSet = (max(outerRingWidth, innerRingWidth) / 2.0) + (showsValueKnob ? valueKnobSize / 4.0 : 0.0)
+            radiusIn = (min(bounds.width, bounds.height) / 2.0) - offSet
         }
 
         return radiusIn
