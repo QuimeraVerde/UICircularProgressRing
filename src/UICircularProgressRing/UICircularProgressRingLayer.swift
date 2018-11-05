@@ -291,13 +291,7 @@ class UICircularProgressRingLayer: CAShapeLayer {
 			
 			let knobY: CGFloat = CGFloat(center.y + radiusIn * sin(realAngle.toRads)) - knobOffset
 			let knobX: CGFloat = CGFloat(center.x + radiusIn * cos(realAngle.toRads)) - knobOffset
-			
-			print("VALUE: \(value)")
-			print(knobOffset)
-			print(angleDiff)
-			print(realAngle)
-			print(knobX)
-			print(knobY)
+
 			drawValueKnob(in: ctx, origin: CGPoint(x: knobX, y: knobY))
 		}
     }
