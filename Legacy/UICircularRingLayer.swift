@@ -326,7 +326,7 @@ class UICircularRingLayer: CAShapeLayer {
             if !ring.isClockwise {
                 innerEndAngle = ring.startAngle - ((value - minValue) / (maxValue - minValue) * angleDiff)
             } else {
-                innerEndAngle = angleDiff + startAngle
+                innerEndAngle = (value - minValue) / (maxValue - minValue) * angleDiff + ring.startAngle
             }
         }
 
