@@ -1,3 +1,96 @@
+# Version 7.0.0
+
+- With this version the library gets a complete rewrite.
+- Written using SwiftUI.
+- Read the README for more info!
+
+# Version 6.5.0
+
+- Fix issue with value knob being clipped for certain ring styles
+
+# Version 6.4.0
+
+- Add Swift Package Manager support
+
+# Version 6.3.0
+
+- Add new "knob" related features, such as custom knob paths and ability to add images to the progress ring knob. Thanks to [@Tom Knapen](https://github.com/wassup-) for the PR!
+
+# Version 6.2.1
+
+- Fix border width calculation to allow proper fitting of view within given bounds. Thanks to [@zulkis](https://github.com/zulkis) for the PR.
+
+# Version 6.2.0
+
+- Adds ability to start the timer ring from a value other than 0.
+
+# Version 6.1.0
+
+- Migrate to Swift 5.0, thanks to [darecki](https://github.com/darecki) for the PR!
+
+# Version 6.0.2
+
+- Fix issue with formatter initializers being interal, they're now public as intended.
+
+# Version 6.0.1
+
+- Fix bug relating to label for rings being removed during animation ([#171](https://github.com/luispadron/UICircularProgressRing/issues/171))
+
+# Version 6.0.0
+
+- Fixed issue with API of `UICircularRingStyle` which made it impossible to have both a gradient and outer ring style, etc.
+- Refactor way that `UICircularRingValueFormatter` works. It's now a simple protocol which anyone can conform to. There are two concrete implementations from 5.0.0 which can still be used, however, they're now `struct`s so cannot be mutated.
+
+### Breaking Changes
+
+- Due to the fact that both the `.style` property now doesnt allow setting `.gradient`, this API has been broken. Instead, use the new `.gradientOptions` property to set a gradient, and `.style` if you need extra styling on top of gradient
+- Because the value formatter are now structs, they cannot be modified with `.` syntax. Instead create a brand new formatter and assign to the `.valueFormatter` property. This will be over all much better in the future, less state and structs are cool!
+
+# Version 5.1.0
+
+*wow bug fixes already?*
+
+- Fixed issue with timing function for timer ring not being set properly
+- Rethink how the timer handler notifies about state, checkout `UICircularTimerRing.State`
+
+
+# Version 5.0.0
+
+#### Major changes
+
+- New `UICircularTimerRing` view!
+- Complete API overhaul
+
+
+#### New changes
+
+- Refactored the `UICircularProgressRing` class into two classes, a new base class `UICircularRing` and the concrete implementation `UICircularProgressRing`.
+- Added new `UICircularTimerRing` view which allows setting a timer, pausing, continuing etc. Without worrying about formatting the value string, get accurate time, etc.
+- Almost the entire code and API has been refactored
+- Add new `UICircularRingValueFormatter` for much nicer handling of formatting values for both views
+- Add new `UICircularGradientOptions` and updated `UICircularRingStyle` to be much more "swifty" in order to use case stored properties.
+- Removed a ton of duplicated code between layer and actual ring class, no longer using a ton of `@NSManaged` properties, instead the layer asks the ring for the needed values. This looks much nicer.
+
+#### Bug fixes
+
+- Fixed issue with gradient style not having the correct radius and thus clipping
+- Fixed issues with border clipping in some cases
+
+#### Breaking changes
+
+- Removed most Objective-C support, because being forced to write nice, new and maintainable code for both Swift and Objective-C has led to issues with adding new features, and its just not feasible if I want to be able to maintain and do cool things with this project. It sucks in terms of backwards compatibility but in the long run I think it'll be worth it.
+- Removed a ton of `@IBInspectable` properties, a lot of these like `ringStyle` behaved really badly, they required using some sort of integer and then converting that into the actual `enum` type for the ring style, all properties that had this issue have been removed. Until Apple adds support for enum, or more complex properties I'll only be providing IB support for the basic properties of the ring.
+- A lot of API changes were done to the styling of the ring, take a look at the docs, specifically `UICircularRingStyle`, `UICircularGradientOptions`, and `UICircularRingValueFormatter`.
+
+#### Migrating from version 4
+
+I expect the migration to be painful, I'm very sorry! I felt that the only way to keep this library going into the future was to completely overhaul and update the API and underlying code. This has obviously led to breaking just about everything, again, I'm sorry.
+
+Some tips:
+
+- If you were using interface builder, take a look at the docs for `UICircularRing` and `UICircularProgressRing`. A lot of `@IBInspectable` properties have been removed/renamed. If these were set in your storyboards/xibs, they will be broken and must be removed from the views settings in IB.
+- Complex styling options are now done in code, with `.style`, `.valueFormatter` and optionally `.valueKnobStyle`. Take a look at the docs to learn more.
+
 # Version 4.1.0
 
 - Fix issues with border drawing and crashes related to it.

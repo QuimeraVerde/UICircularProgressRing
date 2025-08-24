@@ -1,25 +1,16 @@
-
-Pod::Spec.new do |s|
-
-  s.name         = "UICircularProgressRing"
-  s.version      = "4.1.0"
-  s.summary      = "A highly customizable circular progress bar for iOS written in Swift"
-
-  s.description  = <<-DESC
+Pod::Spec.new do |spec|
+  spec.name         = "UICircularProgressRing"
+  spec.version      = "8.0.0"
+  spec.homepage     = "http://ucpr.luispadron.com"
+  spec.summary      = "A highly customizable circular progress bar for iOS written in Swift"
+  spec.description  = <<-DESC
   A highly customizable circular progress bar for iOS written in Swift, with Interface Builder support.
-                   DESC
-
-  s.homepage     = "https://github.com/luispadron/UICircularProgressRing"
-  s.screenshots  = "https://raw.githubusercontent.com/luispadron/UICircularProgressRing/master/.github/banner.png", "https://raw.githubusercontent.com/luispadron/UICircularProgressRing/master/.github/demo.gif"
-
-  s.license      = { :type => "MIT", :file => "LICENSE" }
-
-  s.author             = { "Luis Padron" => "heyluispadron@gmail.com" }
-  s.social_media_url   = "https://luispadron.com"
-
-  s.ios.deployment_target = "8.0"
-  s.tvos.deployment_target = "10.0"
-  s.source       = { :git => "https://github.com/luispadron/UICircularProgressRing.git", :tag => "v#{s.version}" }
-
-  s.source_files  = "src/UICircularProgressRing", "src/UICircularProgressRing/**/*.{h,m}"
+                      DESC
+  spec.license      = { :type => "MIT", :file => "LICENSE.md" }
+  spec.author             = { "Luis Padron" => "heyluispadron@gmail.com" }
+  spec.ios.deployment_target = "10.0"
+  spec.tvos.deployment_target = "10.0"
+  spec.source       = { :git => "https://github.com/luispadron/UICircularProgressRing.git", :tag => "v#{spec.version}" }
+  spec.source_files  = "Legacy", "Legacy/**/*.{h,m,swift}"
+  spec.swift_version = '5.3'
 end
